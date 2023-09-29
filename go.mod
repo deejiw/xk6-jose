@@ -2,15 +2,13 @@ module github.com/szkiba/xk6-jose
 
 go 1.19
 
-require (
-	go.k6.io/k6 v0.45.1
-	gopkg.in/square/go-jose.v2 v2.5.1
-)
+require go.k6.io/k6 v0.45.1
 
 require (
 	github.com/dlclark/regexp2 v1.9.0 // indirect
 	github.com/dop251/goja v0.0.0-20230531210528-d7324b2d74f7 // indirect
 	github.com/fatih/color v1.15.0 // indirect
+	github.com/go-jose/go-jose/v3 v3.0.0
 	github.com/go-sourcemap/sourcemap v2.1.4-0.20211119122758-180fcef48034+incompatible // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/pprof v0.0.0-20230207041349-798e818bf904 // indirect
