@@ -1,4 +1,4 @@
-module github.com/szkiba/xk6-jose
+module github.com/deejiw/xk6-jose
 
 go 1.19
 
