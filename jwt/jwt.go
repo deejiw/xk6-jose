@@ -23,6 +23,7 @@
 package jwt
 
 import (
+	"crypto/rsa"
 	"errors"
 	"fmt"
 
@@ -57,6 +58,24 @@ func (m *Module) Sign(key *jose.JSONWebKey, payload, header map[string]interface
 	}
 
 	return str, nil
+}
+
+func (m *Module) SignRSA(key *rsa.PrivateKey, claim interface{}) (string, error) {
+	var signerOpts = jose.SignerOptions{}
+	signerOpts.WithType("JWT")
+
+	joseSigner, err := jose.NewSigner(jose.SigningKey{
+		Algorithm: jose.RS256,
+		Key:       key,
+	}, &signerOpts)
+	if err != nil {
+		return "", fmt.Errorf("failed to create signer:%+v", err)
+	}
+	token, err := jwt.Signed(joseSigner).Claims(claim).CompactSerialize()
+	if err != nil {
+		return "", fmt.Errorf("failed to sign:%+v", err)
+	}
+	return token, nil
 }
 
 func (m *Module) Decode(compact string) (interface{}, error) {

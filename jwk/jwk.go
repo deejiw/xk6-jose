@@ -25,11 +25,15 @@ package jwk
 import (
 	"crypto/ed25519"
 	"crypto/rand"
+	"crypto/rsa"
 	"crypto/sha256"
+	"crypto/x509"
 	"encoding/base64"
 	"encoding/json"
+	"encoding/pem"
 	"errors"
 	"fmt"
+	"os"
 	"reflect"
 	"strings"
 
@@ -142,4 +146,16 @@ func ed25519Adopt(in []byte, isPublic bool) *jose.JSONWebKey {
 	k.KeyID = base64.RawURLEncoding.EncodeToString(kid[:])
 
 	return k
+}
+
+func (m *Module) ParseRSA(path string) (*rsa.PrivateKey, error) {
+	privateKey, err := os.ReadFile(path)
+	if err != nil {
+		return nil, fmt.Errorf("%w", err)
+	}
+
+	p, _ := pem.Decode(privateKey)
+	parseResult, _ := x509.ParsePKCS8PrivateKey(p.Bytes)
+
+	return parseResult.(*rsa.PrivateKey), nil
 }
