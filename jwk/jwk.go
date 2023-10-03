@@ -33,7 +33,6 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"os"
 	"reflect"
 	"strings"
 
@@ -148,13 +147,8 @@ func ed25519Adopt(in []byte, isPublic bool) *jose.JSONWebKey {
 	return k
 }
 
-func (m *Module) ParseRSA(path string) (*rsa.PrivateKey, error) {
-	privateKey, err := os.ReadFile(path)
-	if err != nil {
-		return nil, fmt.Errorf("%w", err)
-	}
-
-	p, _ := pem.Decode(privateKey)
+func (m *Module) ParseRSA(privateKey string) (*rsa.PrivateKey, error) {
+	p, _ := pem.Decode([]byte(privateKey))
 	parseResult, _ := x509.ParsePKCS8PrivateKey(p.Bytes)
 
 	return parseResult.(*rsa.PrivateKey), nil
